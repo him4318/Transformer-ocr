@@ -29,14 +29,13 @@ from data import preproc as pp, evaluation
 from data.generator import DataGenerator, Tokenizer
 from data.reader import Dataset
 from network.model import make_model
-from engine import single_image_inference, LabelSmoothing, run_epochs
+from engine import single_image_inference, LabelSmoothing, run_epochs,get_memory
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--source", type=str, required=True)
 
     parser.add_argument("--transform", action="store_true", default=False)
-    parser.add_argument("--cv2", action="store_true", default=False)
     parser.add_argument("--image", type=str, default="")
 
     parser.add_argument("--train", action="store_true", default=False)
@@ -82,28 +81,8 @@ if __name__ == "__main__":
 
         print(f"Transformation finished.")
 
-    elif args.cv2:
-        with h5py.File(source_path, "r") as hf:
-            dt = hf['test']['dt'][:256]
-            gt = hf['test']['gt'][:256]
-
-        predict_file = os.path.join(output_path, "predict.txt")
-        predicts = [''] * len(dt)
-
-        if os.path.isfile(predict_file):
-            with open(predict_file, "r") as lg:
-                predicts = [line[5:] for line in lg if line.startswith("TE_P")]
-
-        for x in range(len(dt)):
-            print(f"Image shape:\t{dt[x].shape}")
-            print(f"Ground truth:\t{gt[x].decode()}")
-            print(f"Predict:\t{predicts[x]}\n")
-
-            cv2.imshow("img", pp.adjust_to_see(dt[x]))
-            cv2.waitKey(0)
-
     elif args.image:
-
+        
         img = pp.preprocess(args.image, input_size=input_size)
         
         #making image compitable with resnet
@@ -112,30 +91,30 @@ if __name__ == "__main__":
 
         model = make_model(tokenizer.vocab_size, hidden_dim=256, nheads=4,
                  num_encoder_layers=4, num_decoder_layers=4)
-        device = torch.device(device)
+        device = torch.device(args.device)
         model.to(device)
-        
+        transform = T.Compose([
+                T.ToTensor()])
+                
+
         if os.path.exists(target_path):
-            model.load_state_dict(torch.load(target_path)
+            model.load_state_dict(torch.load(target_path))            
         else:            
             print('No model checkpoint found')
-            return
         
-        prediction = single_image_inference(model,img,device,tokenizer,device)
+        prediction = single_image_inference(model, x_test, tokenizer, transform, device)
         
         print("\n####################################")
-        print("predicted text is {}".format(prediction))
-        cv2.imshow(f"Image {i + 1}", cv2.imread(args.image))
+        print("predicted text is: {}".format(prediction))
+        cv2.imshow("Image ", cv2.imread(args.image))
         print("\n####################################")
         cv2.waitKey(0)
 
     else:
         assert os.path.isfile(source_path) or os.path.isfile(target_path)
         os.makedirs(output_path, exist_ok=True)
-                
-        elif args.train:
-            transform = T.Compose([
-                T.ToTensor()])
+        
+        if args.train:
             
             device = torch.device(device)
             model = make_model(tokenizer.vocab_size, hidden_dim=256, nheads=4,
@@ -145,13 +124,13 @@ if __name__ == "__main__":
             train_loader = torch.utils.data.DataLoader(DataGenerator(source_path,charset_base,max_text_length,'train',transform), batch_size=args.batch_size, shuffle=False, num_workers=2)
             val_loader = torch.utils.data.DataLoader(DataGenerator(source_path,charset_base,max_text_length,'valid',transform), batch_size=args.batch_size, shuffle=False, num_workers=2)
 
-            criterion = LabelSmoothing(size=100, padding_idx=0, smoothing=0.1)
+            criterion = LabelSmoothing(size=tokenizer.vocab_size, padding_idx=0, smoothing=0.1)
             criterion.to(device)
             lr = args.lr # learning rate
             optimizer = torch.optim.AdamW(model.parameters(), lr=lr,weight_decay=.0004)
             scheduler = torch.optim.lr_scheduler.StepLR(optimizer, 1, gamma=0.95)
 
-            run_epochs(model, criterion, optimizer, scheduler, train_loader, val_loader, target_path)                
+            run_epochs(model, criterion, optimizer, scheduler, train_loader, val_loader, args.epochs, tokenizer, target_path)                
 
 
         elif args.test:
@@ -159,13 +138,13 @@ if __name__ == "__main__":
             model.eval()
             predicts = []
             gt = []
-            tes_loader = torch.utils.data.DataLoader(DataGenerator(source,charset,max_text,'test',transform), batch_size=1, shuffle=False, num_workers=2)
+            tes_loader = torch.utils.data.DataLoader(DataGenerator(source_path,charset_base,max_text_length,'train',transform), batch_size=1, shuffle=False, num_workers=2)
             with torch.no_grad():
                 for batch in tes_loader:
                     src, trg = batch
                     src, trg = src.cuda(), trg.cuda()
                     
-                    memory = func(model,src.float())
+                    memory = get_memory(model,src.float())
                     out_indexes = [tokenizer.chars.index('SOS'), ]
                     for i in range(128):
                         mask = model.generate_square_subsequent_mask(i+1).to('cuda')
@@ -177,13 +156,13 @@ if __name__ == "__main__":
                         if out_token == 3:
                             break
                         
-                    predicts.append(token.decode(out_indexes))
-                    gt.append(token.decode(trg.flatten(0,1)))
+                    predicts.append(tokenizer.decode(out_indexes))
+                    gt.append(tokenizer.decode(trg.flatten(0,1)))
 
             predicts = list(map(lambda x : x.replace('SOS','').replace('EOS',''),predicts))
             gt = list(map(lambda x : x.replace('SOS','').replace('EOS',''),gt))
             
             evaluate = evaluation.ocr_metrics(predicts=predicts,
                                               ground_truth=gt,
-                                              args.norm_accentuation,args.norm_punctuation)
-            print(evaluate)
+                                              norm_accentuation=args.norm_accentuation,norm_punctuation=args.norm_punctuation)
+            print("Calculate Character Error Rate {}, Word Error Rate {} and Sequence Error Rate {}".format(evaluate[0],evaluate[1],evaluate[2]))

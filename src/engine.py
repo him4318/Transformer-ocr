@@ -37,7 +37,7 @@ class LabelSmoothing(nn.Module):
 
 
 
-def train(model, criterion, optimizer, scheduler, dataloader, vocab_length=100, device):
+def train(model, criterion, optimizer, scheduler, dataloader, vocab_length, device):
 
     model.train()
     total_loss = 0
@@ -58,7 +58,7 @@ def train(model, criterion, optimizer, scheduler, dataloader, vocab_length=100, 
 
     return total_loss / len(dataloader),output
 
-def evaluate(model, criterion, dataloader, vocab_length=100, device):
+def evaluate(model, criterion, dataloader, vocab_length, device):
 
     model.eval()
     epoch_loss = 0
@@ -88,11 +88,11 @@ def get_memory(model, imgs):
     return model.transformer.encoder(pos +  0.1 * x.flatten(2).permute(2, 0, 1))
     
 
-def single_image_inference(model, img, tokenizer,device):
+def single_image_inference(model, img, tokenizer, transform, device):
     '''
     Run inference on single image
     '''
-    
+    img = transform(img)    
     imgs = img.unsqueeze(0).float().to(device)
     with torch.no_grad():    
       memory = get_memory(model,imgs)
@@ -108,7 +108,7 @@ def single_image_inference(model, img, tokenizer,device):
             
             out_indexes.append(out_token)
 
-    pre = tokenizer.decode(out_token)
+    pre = tokenizer.decode(out_indexes[1:])
     return pre
 
 def epoch_time(start_time, end_time):
@@ -118,7 +118,7 @@ def epoch_time(start_time, end_time):
     return elapsed_mins, elapsed_secs
 
 
-def run_epochs(model, criterion, optimizer, scheduler, train_loader, val_loader, epochs, target_path, device):
+def run_epochs(model, criterion, optimizer, scheduler, train_loader, val_loader, epochs, tokenizer, target_path, device):
     '''
     run one epoch for a model
     '''
@@ -129,8 +129,8 @@ def run_epochs(model, criterion, optimizer, scheduler, train_loader, val_loader,
      
         start_time = time.time()
     
-        train_loss,outputs = train(model,  criterion, optimizer, scheduler, train_loader, device)
-        valid_loss = evaluate(model, criterion, val_loader, device)
+        train_loss,outputs = train(model, criterion, optimizer, scheduler, train_loader, tokenizer.vocab_size, device)
+        valid_loss = evaluate(model, criterion, val_loader, tokenizer.vocab_size, device)
      
         epoch_mins, epoch_secs = epoch_time(start_time, time.time())
 
