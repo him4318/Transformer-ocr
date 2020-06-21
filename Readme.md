@@ -1,10 +1,10 @@
 Handwritten Text Recognition (HTR) system implemented using Pytorch and trained on the Bentham/IAM/Rimes/Saint Gall/Washington offline HTR datasets. This Neural Network model recognizes the text contained in the images of segmented texts lines.
 
 Data pre-processing is totally based on this awesome repository of [handwritten text recognition](https://github.com/arthurflor23/handwritten-text-recognition).
-Data partitioning (train, validation, test) was performed following the methodology of each dataset. 
+Data partitioning (train, validation, test) was performed by following the methodology of each dataset. 
 
-Model building was done using the the transformer architecture. 
-Recentely facebook research realeased a [paper](https://github.com/facebookresearch/detr), where they used transformer for object detection. I made few changes to their model so that it can run on text recognition, 
+Model building is done using the transformer architecture. 
+Recentely facebook research realeased a [paper](https://github.com/facebookresearch/detr) where, they used transformer for object detection. I made few changes to their model so that it could be run on text recognition.
 
 ## Datasets supported
 
@@ -52,4 +52,5 @@ A Jupyter Notebook is available to demo run, check out the **[tutorial](https://
     * Trying different parameters of Transformer.
     * Trying different backbone model for getting feature vector of image.
 * Training took ~20 hrs on google colab. where as [arthurflor](https://github.com/arthurflor23/handwritten-text-recognition) model can be trained in ~8hrs.
+* Word error rate is 15% less when compared to Arthur's model.
 * Purpose of this project was to showcase the power of Transformer ie: You can use them anywhere.
