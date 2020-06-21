@@ -3,8 +3,8 @@ Handwritten Text Recognition (HTR) system implemented using Pytorch and trained 
 Data pre-processing is totally based on this awesome repository of [handwritten text recognition](https://github.com/arthurflor23/handwritten-text-recognition).
 Data partitioning (train, validation, test) was performed following the methodology of each dataset. 
 
-Model building was done using the the transformer architechture, recentely facebook research realeased a [paper](https://github.com/facebookresearch/detr), where they used transformer for object detection.
-I made few changes to their model so that it can run on text recognition, 
+Model building was done using the the transformer architecture. 
+Recentely facebook research realeased a [paper](https://github.com/facebookresearch/detr), where they used transformer for object detection. I made few changes to their model so that it can run on text recognition, 
 
 ## Datasets supported
 
