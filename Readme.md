@@ -51,5 +51,5 @@ A Jupyter Notebook is available to demo run, check out the **[tutorial](https://
     * Trying more FC layers before output.
     * Trying different parameters of Transformer.
     * Trying different backbone model for getting feature vector of image.
-* Training took ~20 hrs on google colab. where as [arthurflor23](https://github.com/arthurflor23/handwritten-text-recognition) can be trained in ~8hrs.
+* Training took ~20 hrs on google colab. where as [arthurflor](https://github.com/arthurflor23/handwritten-text-recognition) model can be trained in ~8hrs.
 * Purpose of this project was to showcase the power of Transformer ie: You can use them anywhere.
