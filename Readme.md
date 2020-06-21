@@ -1,10 +1,3 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Sun Jun 21 18:28:34 2020
-
-@author: himanshu.chaudhary
-"""
-
 Handwritten Text Recognition (HTR) system implemented using Pytorch and trained on the Bentham/IAM/Rimes/Saint Gall/Washington offline HTR datasets. This Neural Network model recognizes the text contained in the images of segmented texts lines.
 
 Data pre-processing is totally based on this awesome repository of [handwritten text recognition](https://github.com/arthurflor23/handwritten-text-recognition).
@@ -51,12 +44,12 @@ A Jupyter Notebook is available to demo run, check out the **[tutorial](https://
 
 **Notes**:
 
-1. Model used is from DETR(facebook research) notebook but in there paper they perfromed few more steps.
-2. For improving the results few more things can be done:
-    2.1 Using the warmup steps
-    2.2 Using sine positional encodings for image vector.
-    2.3 Trying more FC layers before output.
-    2.4 Trying different parameters of Transformer.
-    2.5 Trying different backbone model for getting feature vector of image.
-3. Training took ~20 hrs on google colab. where as [arthurflor23](https://github.com/arthurflor23/handwritten-text-recognition) can be trained in ~8hrs.
-4. Purpose of this project was to showcase the power of Transformer ie: You can use them anywhere.
+* Model used is from DETR(facebook research) notebook but in there paper they perfromed few more steps.
+* For improving the results few more things can be done:
+    * Using the warmup steps
+    * Using sine positional encodings for image vector.
+    * Trying more FC layers before output.
+    * Trying different parameters of Transformer.
+    * Trying different backbone model for getting feature vector of image.
+* Training took ~20 hrs on google colab. where as [arthurflor23](https://github.com/arthurflor23/handwritten-text-recognition) can be trained in ~8hrs.
+* Purpose of this project was to showcase the power of Transformer ie: You can use them anywhere.
