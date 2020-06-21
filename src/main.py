@@ -14,7 +14,6 @@ Provides options via the command line to perform project tasks.
 from pathlib import Path
 
 import torch
-import torchvision
 
 import numpy as np
 import argparse
@@ -22,7 +21,6 @@ import cv2
 import h5py
 import os
 import string
-import datetime
 import torchvision.transforms as T
 
 from data import preproc as pp, evaluation
@@ -146,7 +144,7 @@ if __name__ == "__main__":
                     
                     memory = get_memory(model,src.float())
                     out_indexes = [tokenizer.chars.index('SOS'), ]
-                    for i in range(128):
+                    for i in range(max_text_length):
                         mask = model.generate_square_subsequent_mask(i+1).to('cuda')
                         trg_tensor = torch.LongTensor(out_indexes).unsqueeze(1).to(device)
                         output = model.vocab(model.transformer.decoder(model.query_pos(model.decoder(trg_tensor)), memory,tgt_mask=mask))
