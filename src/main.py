@@ -10,6 +10,7 @@ Provides options via the command line to perform project tasks.
 * `--norm_punctuation`: discard punctuation marks in the evaluation
 * `--epochs`: number of epochs
 * `--batch_size`: number of batches
+* `--lr`: learning rate
 """
 from pathlib import Path
 
