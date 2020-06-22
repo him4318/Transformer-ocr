@@ -136,7 +136,7 @@ if __name__ == "__main__":
             model.eval()
             predicts = []
             gt = []
-            tes_loader = torch.utils.data.DataLoader(DataGenerator(source_path,charset_base,max_text_length,'train',transform), batch_size=1, shuffle=False, num_workers=2)
+            tes_loader = torch.utils.data.DataLoader(DataGenerator(source_path,charset_base,max_text_length,'test',transform), batch_size=1, shuffle=False, num_workers=2)
             with torch.no_grad():
                 for batch in tes_loader:
                     src, trg = batch
