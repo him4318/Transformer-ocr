@@ -33,7 +33,7 @@ e. [Washington](http://www.fki.inf.unibe.ch/databases/iam-historical-document-da
 
 - `--source`: dataset/model name (bentham, iam, rimes, saintgall, washington)
 - `--transform`: transform dataset to the HDF5 file
-- `--image`: predict a single image with the source parameter
+- `--image`: prediction on a single image with the source parameter
 - `--train`: train model using the source argument
 - `--test`: evaluate and predict model using the source argument
 - `--norm_accentuation`: discard accentuation marks in the evaluation
