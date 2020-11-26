@@ -8,7 +8,7 @@ Recentely facebook research realeased a [paper](https://github.com/facebookresea
 
 ## Tutorial (Google Colab/Drive)
 
-A Jupyter Notebook is available to demo run, check out the **[tutorial](https://colab.research.google.com/drive/1rCPaksWk7SAH4crOVYVzUaWsKbz2i3jE?authuser=1#scrollTo=rQew0_CkacDU)** on Google Colab/Drive.
+A Jupyter Notebook is available for demo, check out the **[tutorial](https://colab.research.google.com/drive/1rCPaksWk7SAH4crOVYVzUaWsKbz2i3jE?authuser=1#scrollTo=rQew0_CkacDU)** on Google Colab/Drive.
 
 ## Datasets supported
 
