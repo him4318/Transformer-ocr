@@ -6,6 +6,10 @@ Data partitioning (train, validation, test) was performed by following the metho
 Model building is done using the transformer architecture. 
 Recentely facebook research realeased a [paper](https://github.com/facebookresearch/detr) where, they used transformer for object detection. I made few changes to their model so that it could be run on text recognition.
 
+## Tutorial (Google Colab/Drive)
+
+A Jupyter Notebook is available to demo run, check out the **[tutorial](https://colab.research.google.com/drive/1rCPaksWk7SAH4crOVYVzUaWsKbz2i3jE?authuser=1#scrollTo=rQew0_CkacDU)** on Google Colab/Drive.
+
 ## Datasets supported
 
 a. [Bentham](http://transcriptorium.eu/datasets/bentham-collection/)
@@ -37,10 +41,6 @@ e. [Washington](http://www.fki.inf.unibe.ch/databases/iam-historical-document-da
 - `--epochs`: number of epochs
 - `--batch_size`: number of the size of each batch
 - `--lr`: Learning rate
-
-## Tutorial (Google Colab/Drive)
-
-A Jupyter Notebook is available to demo run, check out the **[tutorial](https://colab.research.google.com/drive/1rCPaksWk7SAH4crOVYVzUaWsKbz2i3jE?authuser=1#scrollTo=rQew0_CkacDU)** on Google Colab/Drive.
 
 **Notes**:
 
