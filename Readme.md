@@ -18,9 +18,9 @@ b. [IAM](http://www.fki.inf.unibe.ch/databases/iam-handwriting-database)
 
 c. [Rimes](http://www.a2ialab.com/doku.php?id=rimes_database:start)
 
-d. [Saint Gall](http://www.fki.inf.unibe.ch/databases/iam-historical-document-database/saint-gall-database)
+d. [Saint Gall](https://fki.tic.heia-fr.ch/databases/saint-gall-database)
 
-e. [Washington](http://www.fki.inf.unibe.ch/databases/iam-historical-document-database/washington-database)
+e. [Washington](https://fki.tic.heia-fr.ch/databases/washington-database)
 
 ## Requirements
 
