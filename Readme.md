@@ -24,10 +24,10 @@ e. [Washington](https://fki.tic.heia-fr.ch/databases/washington-database)
 
 ## Requirements
 
-- Python 3.x
+- Python 3.6
 - OpenCV 4.x
 - editdistance
-- Pytorch 1.x
+- Pytorch 1.5
 
 ## Command line arguments
 
